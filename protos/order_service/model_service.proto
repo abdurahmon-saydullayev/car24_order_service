@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package order_service;
+
+option go_package = "genproto/order_service";
+import "model.proto";
+
+service OrderService{
+    rpc CreateModel(CreateMechanic) returns (Mechanic);
+    rpc GetModelByID(MechanicPK) returns (Mechanic);
+}

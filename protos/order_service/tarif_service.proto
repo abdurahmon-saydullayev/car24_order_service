@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package order_service;
+
+option go_package = "genproto/order_service";
+import "tarif.proto";
+
+service OrderService{
+    rpc CreateTarif(CreateTarif) returns (Tarif);
+    rpc GetTarifByID(TarifPK) returns (Tarif);
+}
