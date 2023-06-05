@@ -4,6 +4,7 @@ package order_service;
 
 option go_package = "genproto/order_service";
 import "order.proto";
+import "google/protobuf/empty.proto";
 
 service OrderService{
     rpc Create (CreateOrder) returns (Order);

@@ -1,0 +1,9 @@
+CREATE TABLE IF NOT EXISTS "car" (
+    id UUID PRIMARY KEY,
+    state_number VARCHAR(2) NOT NULL,
+    tarif_id UUID NOT NULL,
+    model_id UUID NOT NULL,
+    status boolean NOT NULL,
+    FOREIGN KEY (tarif_id) REFERENCES tarif (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (model_id) REFERENCES model (id) ON DELETE CASCADE ON UPDATE CASCADE,
+);
