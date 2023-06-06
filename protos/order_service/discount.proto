@@ -4,19 +4,19 @@ package order_service;
 
 option go_package = "genproto/order_service";
 
-message Tarif{
+message Discount{
     string id = 1;
     string name = 2;
-    string model_id = 3;
-    string price_per_day = 4;
+    string discount_type = 3;
+    string create_at = 4;
+    string update_at = 5;
 }
 
-message CreateTarif{
+message CreateDiscount{
     string name = 1;
-    string model_id = 2;
-    string price_per_day = 3;
+    string discount_type = 2;
 }
 
-message TarifPK{
+message DiscountPK{
     string id = 1;
 }

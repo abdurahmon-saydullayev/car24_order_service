@@ -21,7 +21,7 @@ const _ = grpc.SupportPackageIsVersion7
 type OrderServiceClient interface {
 	Create(ctx context.Context, in *CreateOrder, opts ...grpc.CallOption) (*Order, error)
 	GetByID(ctx context.Context, in *OrderPrimaryKey, opts ...grpc.CallOption) (*Order, error)
-	GetList(ctx context.Context, in *GetListOrdertRequest, opts ...grpc.CallOption) (*GetListOrdertResponse, error)
+	GetList(ctx context.Context, in *GetListOrderRequest, opts ...grpc.CallOption) (*GetListOrderResponse, error)
 	Update(ctx context.Context, in *UpdateOrder, opts ...grpc.CallOption) (*Order, error)
 	UpdatePatch(ctx context.Context, in *UpdatePatchOrder, opts ...grpc.CallOption) (*Order, error)
 	Delete(ctx context.Context, in *OrderPrimaryKey, opts ...grpc.CallOption) (*empty.Empty, error)
@@ -53,8 +53,8 @@ func (c *orderServiceClient) GetByID(ctx context.Context, in *OrderPrimaryKey, o
 	return out, nil
 }
 
-func (c *orderServiceClient) GetList(ctx context.Context, in *GetListOrdertRequest, opts ...grpc.CallOption) (*GetListOrdertResponse, error) {
-	out := new(GetListOrdertResponse)
+func (c *orderServiceClient) GetList(ctx context.Context, in *GetListOrderRequest, opts ...grpc.CallOption) (*GetListOrderResponse, error) {
+	out := new(GetListOrderResponse)
 	err := c.cc.Invoke(ctx, "/order_service.OrderService/GetList", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -95,7 +95,7 @@ func (c *orderServiceClient) Delete(ctx context.Context, in *OrderPrimaryKey, op
 type OrderServiceServer interface {
 	Create(context.Context, *CreateOrder) (*Order, error)
 	GetByID(context.Context, *OrderPrimaryKey) (*Order, error)
-	GetList(context.Context, *GetListOrdertRequest) (*GetListOrdertResponse, error)
+	GetList(context.Context, *GetListOrderRequest) (*GetListOrderResponse, error)
 	Update(context.Context, *UpdateOrder) (*Order, error)
 	UpdatePatch(context.Context, *UpdatePatchOrder) (*Order, error)
 	Delete(context.Context, *OrderPrimaryKey) (*empty.Empty, error)
@@ -112,7 +112,7 @@ func (UnimplementedOrderServiceServer) Create(context.Context, *CreateOrder) (*O
 func (UnimplementedOrderServiceServer) GetByID(context.Context, *OrderPrimaryKey) (*Order, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetByID not implemented")
 }
-func (UnimplementedOrderServiceServer) GetList(context.Context, *GetListOrdertRequest) (*GetListOrdertResponse, error) {
+func (UnimplementedOrderServiceServer) GetList(context.Context, *GetListOrderRequest) (*GetListOrderResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetList not implemented")
 }
 func (UnimplementedOrderServiceServer) Update(context.Context, *UpdateOrder) (*Order, error) {
@@ -174,7 +174,7 @@ func _OrderService_GetByID_Handler(srv interface{}, ctx context.Context, dec fun
 }
 
 func _OrderService_GetList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetListOrdertRequest)
+	in := new(GetListOrderRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -186,7 +186,7 @@ func _OrderService_GetList_Handler(srv interface{}, ctx context.Context, dec fun
 		FullMethod: "/order_service.OrderService/GetList",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OrderServiceServer).GetList(ctx, req.(*GetListOrdertRequest))
+		return srv.(OrderServiceServer).GetList(ctx, req.(*GetListOrderRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }

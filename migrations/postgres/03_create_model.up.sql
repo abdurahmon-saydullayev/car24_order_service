@@ -1,6 +1,6 @@
-CREATE TABLE IF NOT EXISTS "models" (
+CREATE TABLE IF NOT EXISTS "model" (
     id UUID PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP,
+    updated_at TIMESTAMP
 );

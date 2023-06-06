@@ -20,6 +20,7 @@ message Order{
     string is_paid_date =12;
     string created_at =13;
     string updated_at =14;
+    string order_number =15;
 }
 
 message CreateOrder{
@@ -34,6 +35,7 @@ message CreateOrder{
     bool status =9;
     int32 miliage =10;
     string is_paid_date =11;
+    string order_number =12;
 }
 
 message UpdateOrder{
@@ -47,6 +49,7 @@ message UpdateOrder{
     bool status =10;
     int32 miliage =11;
     string is_paid_date =12;
+    string order_number = 13;
 }
 
 message UpdatePatchOrder {
@@ -54,13 +57,13 @@ message UpdatePatchOrder {
     google.protobuf.Struct fields = 2;
 }
 
-message GetListOrdertRequest {
+message GetListOrderRequest {
     int64 offset = 1;
     int64 limit = 2;
     string search = 3;
 }
 
-message GetListOrdertResponse { 
+message GetListOrderResponse { 
     int64 count = 1;
     repeated Order clients = 2;
 }
