@@ -9,6 +9,7 @@ require (
 	github.com/jackc/pgx v3.6.2+incompatible
 	github.com/jackc/pgx/v4 v4.18.1
 	github.com/joho/godotenv v1.5.1
+	github.com/lib/pq v1.10.2
 	github.com/spf13/cast v1.5.1
 	github.com/streamingfast/logging v0.0.0-20221209193439-bff11742bf4c
 	go.uber.org/zap v1.24.0

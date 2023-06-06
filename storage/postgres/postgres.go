@@ -17,6 +17,8 @@ type Store struct {
 	discount storage.DiscountRepoI
 	mechanic storage.MechnicRepoI
 	model    storage.ModelRepoI
+	tarif    storage.TarifRepoI
+	car      storage.CarRepoI
 }
 
 func NewPostgres(ctx context.Context, cfg config.Config) (storage.StorageI, error) {
@@ -45,6 +47,8 @@ func NewPostgres(ctx context.Context, cfg config.Config) (storage.StorageI, erro
 		discount: NewDiscountRepo(pool),
 		mechanic: NewMechanicRepo(pool),
 		model:    NewModelRepo(pool),
+		tarif:    NewTarifRepo(pool),
+		car:      NewCarRepo(pool),
 	}, nil
 }
 
@@ -78,6 +82,20 @@ func (s *Store) Model() storage.ModelRepoI {
 		s.model = NewModelRepo(s.db)
 	}
 	return s.model
+}
+
+func (s *Store) Tarif() storage.TarifRepoI {
+	if s.tarif == nil {
+		s.tarif = NewTarifRepo(s.db)
+	}
+	return s.tarif
+}
+
+func (s *Store) Car() storage.CarRepoI {
+	if s.car == nil {
+		s.car = NewCarRepo(s.db)
+	}
+	return s.car
 }
 
 func (l *Store) Log(ctx context.Context, level pgx.LogLevel, msg string, data map[string]interface{}) {

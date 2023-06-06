@@ -2,6 +2,7 @@ package storage
 
 import (
 	"Projects/Car24/car24_order_service/genproto/order_service"
+	"Projects/Car24/car24_order_service/models"
 	"context"
 )
 
@@ -10,9 +11,9 @@ type StorageI interface {
 	Discount() DiscountRepoI
 	Mechanic() MechnicRepoI
 	Model() ModelRepoI
-	// Tarif() TarifRepoI
-	// Car() CarRepoI
-	// Order() OrderRepoI
+	Tarif() TarifRepoI
+	Car() CarRepoI
+	Order() OrderRepoI
 }
 
 type DiscountRepoI interface {
@@ -28,7 +29,7 @@ type MechnicRepoI interface {
 
 type ModelRepoI interface {
 	Create(context.Context, *order_service.CreateModel) (*order_service.ModelPK, error)
-	GetByID(context.Context, *order_service.ModelPK) (*order_service.Mechanic, error)
+	GetByID(context.Context, *order_service.ModelPK) (*order_service.Model, error)
 }
 
 type TarifRepoI interface {
@@ -41,7 +42,7 @@ type CarRepoI interface {
 	GetByID(context.Context, *order_service.CarPrimaryKey) (*order_service.Car, error)
 	GetList(context.Context, *order_service.GetListCarRequest) (*order_service.GetListCarResponse, error)
 	Update(context.Context, *order_service.UpdateCar) (int64, error)
-	UpdatePatch(context.Context, *order_service.UpdatePathCar) (int64, error)
+	UpdatePatch(ctx context.Context, req *models.UpdatePatchRequest) (resp int64, err error)
 	Delete(context.Context, *order_service.CarPrimaryKey) error
 }
 
@@ -50,6 +51,6 @@ type OrderRepoI interface {
 	GetByID(context.Context, *order_service.OrderPrimaryKey) (*order_service.Order, error)
 	GetList(context.Context, *order_service.GetListOrderRequest) (*order_service.GetListOrderResponse, error)
 	Update(context.Context, *order_service.UpdateOrder) (int64, error)
-	UpdatePatch(context.Context, *order_service.UpdatePatchOrder) (int64, error)
+	UpdatePatch(ctx context.Context, req *models.UpdatePatchRequest) (resp int64, err error)
 	Delete(context.Context, *order_service.OrderPrimaryKey) error
 }

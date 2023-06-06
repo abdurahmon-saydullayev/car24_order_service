@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS "order" (
     client_id UUID NOT NULL,
     tarif_id UUID NOT NULL,
     total_price DOUBLE PRECISION NOT NULL,
-    paid_price DOUBLE PRECISION NOT NULL,
+    paid_price DOUBLE PRECISION DEFAULT 0,
     day_count INTEGER,
     start_date DATE, 
     discount DOUBLE PRECISION,

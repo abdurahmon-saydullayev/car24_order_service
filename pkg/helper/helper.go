@@ -51,6 +51,20 @@ func GenerateOTP(length int) (string, error) {
 	return string(buffer), nil
 }
 
+func GenerateOrderNomer() (string, error) {
+	buffer := make([]byte, 8)
+	_, err := rand.Read(buffer)
+	if err != nil {
+		return "", err
+	}
+
+	for i := 0; i < 8; i++ {
+		buffer[i] = otpChars[int(buffer[i])%len(otpChars)]
+	}
+
+	return string(buffer), nil
+}
+
 func Difference(a, b []int32) []int32 {
 	mb := make(map[int32]struct{}, len(b))
 	for _, x := range b {
