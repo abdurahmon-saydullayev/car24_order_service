@@ -44,7 +44,7 @@ func (c *orderRepo) Create(ctx context.Context, req *order_service.CreateOrder) 
 			discount,
 			order_number,
 			status,
-			miliage,
+			mileage,
 			is_paid_date,
 			created_at,
 			updated_at
@@ -66,6 +66,7 @@ func (c *orderRepo) Create(ctx context.Context, req *order_service.CreateOrder) 
 		order_num,
 		req.Status,
 		req.Miliage,
+		req.IsPaidDate,
 	)
 	if err != nil {
 		return nil, err

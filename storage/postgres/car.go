@@ -41,6 +41,7 @@ func (s *carRepo) Create(ctx context.Context, req *order_service.CreateCar) (res
 		) VALUES($1, $2, $3, $4, NOW(),NOW())
 	`
 	_, err = s.db.Exec(ctx, query,
+		id,
 		req.StateNumber,
 		req.TarifId,
 		req.ModelId,
@@ -108,7 +109,7 @@ func (s *carRepo) GetList(ctx context.Context, req *order_service.GetListCarRequ
 			id,
 			state_number,
 			tarif_id,
-			model_id
+			model_id,
 			created_at,
 			updated_at
 		FROM "car"

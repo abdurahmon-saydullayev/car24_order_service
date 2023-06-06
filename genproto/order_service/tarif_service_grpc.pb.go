@@ -4,6 +4,7 @@ package order_service
 
 import (
 	context "context"
+	empty "github.com/golang/protobuf/ptypes/empty"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -20,6 +21,7 @@ const _ = grpc.SupportPackageIsVersion7
 type TarifServiceClient interface {
 	Create(ctx context.Context, in *CreateTarif, opts ...grpc.CallOption) (*Tarif, error)
 	GetByID(ctx context.Context, in *TarifPK, opts ...grpc.CallOption) (*Tarif, error)
+	Delete(ctx context.Context, in *TarifPK, opts ...grpc.CallOption) (*empty.Empty, error)
 }
 
 type tarifServiceClient struct {
@@ -48,12 +50,22 @@ func (c *tarifServiceClient) GetByID(ctx context.Context, in *TarifPK, opts ...g
 	return out, nil
 }
 
+func (c *tarifServiceClient) Delete(ctx context.Context, in *TarifPK, opts ...grpc.CallOption) (*empty.Empty, error) {
+	out := new(empty.Empty)
+	err := c.cc.Invoke(ctx, "/order_service.TarifService/Delete", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // TarifServiceServer is the server API for TarifService service.
 // All implementations must embed UnimplementedTarifServiceServer
 // for forward compatibility
 type TarifServiceServer interface {
 	Create(context.Context, *CreateTarif) (*Tarif, error)
 	GetByID(context.Context, *TarifPK) (*Tarif, error)
+	Delete(context.Context, *TarifPK) (*empty.Empty, error)
 	mustEmbedUnimplementedTarifServiceServer()
 }
 
@@ -66,6 +78,9 @@ func (UnimplementedTarifServiceServer) Create(context.Context, *CreateTarif) (*T
 }
 func (UnimplementedTarifServiceServer) GetByID(context.Context, *TarifPK) (*Tarif, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetByID not implemented")
+}
+func (UnimplementedTarifServiceServer) Delete(context.Context, *TarifPK) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
 }
 func (UnimplementedTarifServiceServer) mustEmbedUnimplementedTarifServiceServer() {}
 
@@ -116,6 +131,24 @@ func _TarifService_GetByID_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _TarifService_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TarifPK)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TarifServiceServer).Delete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/order_service.TarifService/Delete",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TarifServiceServer).Delete(ctx, req.(*TarifPK))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // TarifService_ServiceDesc is the grpc.ServiceDesc for TarifService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -130,6 +163,10 @@ var TarifService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetByID",
 			Handler:    _TarifService_GetByID_Handler,
+		},
+		{
+			MethodName: "Delete",
+			Handler:    _TarifService_Delete_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

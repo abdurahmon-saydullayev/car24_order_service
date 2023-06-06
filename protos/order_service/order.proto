@@ -15,27 +15,26 @@ message Order{
     int32 day_count =7;
     string start_date =8;
     string discount =9;
-    bool status =10;
-    int32 miliage =11;
-    string is_paid_date =12;
-    string created_at =13;
-    string updated_at =14;
-    string order_number =15;
+    string order_number =10;
+    bool status =11;
+    int32 miliage =12;
+    string is_paid_date =13;
+    string created_at =14;
+    string updated_at =15;
 }
 
 message CreateOrder{
     string car_id =1;
     string client_id =2;
     string tarif_id =3;
-    string total_price = 4;
-    string paid_price = 5;
+    double total_price = 4;
+    double paid_price = 5;
     int32 day_count = 6;
     string start_date =7;
     string discount =8;
     bool status =9;
     int32 miliage =10;
     string is_paid_date =11;
-    string order_number =12;
 }
 
 message UpdateOrder{

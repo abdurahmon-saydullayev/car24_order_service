@@ -27,7 +27,7 @@ func (s *modelRepo) Create(ctx context.Context, req *order_service.CreateModel) 
 			id,
 			name,
 			created_at,
-			updated_at,
+			updated_at
 		) VALUES($1, $2, NOW(), NOW())
 		`
 

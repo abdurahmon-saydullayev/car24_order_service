@@ -3,11 +3,12 @@ CREATE TABLE IF NOT EXISTS "order" (
     car_id UUID NOT NULL,
     client_id UUID NOT NULL,
     tarif_id UUID NOT NULL,
+    mechanic_id UUID NOT NULL,
     total_price DOUBLE PRECISION NOT NULL,
     paid_price DOUBLE PRECISION DEFAULT 0,
     day_count INTEGER,
-    start_date DATE, 
-    discount DOUBLE PRECISION,
+    start_date DATE,
+    discount UUID ,
     order_number VARCHAR,
     status BOOLEAN,
     mileage INTEGER,
@@ -15,5 +16,7 @@ CREATE TABLE IF NOT EXISTS "order" (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP,
     FOREIGN KEY (tarif_id) REFERENCES tarif (id) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (car_id) REFERENCES car (id) ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY (car_id) REFERENCES car (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (mechanic_id) REFERENCES mechanic (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (discount) REFERENCES discount (id) ON DELETE CASCADE ON UPDATE CASCADE
 );

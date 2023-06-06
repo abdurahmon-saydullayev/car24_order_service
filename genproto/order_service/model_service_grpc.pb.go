@@ -4,6 +4,7 @@ package order_service
 
 import (
 	context "context"
+	empty "github.com/golang/protobuf/ptypes/empty"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -20,6 +21,7 @@ const _ = grpc.SupportPackageIsVersion7
 type ModelServiceClient interface {
 	Create(ctx context.Context, in *CreateModel, opts ...grpc.CallOption) (*Model, error)
 	GetByID(ctx context.Context, in *ModelPK, opts ...grpc.CallOption) (*Model, error)
+	Delete(ctx context.Context, in *ModelPK, opts ...grpc.CallOption) (*empty.Empty, error)
 }
 
 type modelServiceClient struct {
@@ -48,12 +50,22 @@ func (c *modelServiceClient) GetByID(ctx context.Context, in *ModelPK, opts ...g
 	return out, nil
 }
 
+func (c *modelServiceClient) Delete(ctx context.Context, in *ModelPK, opts ...grpc.CallOption) (*empty.Empty, error) {
+	out := new(empty.Empty)
+	err := c.cc.Invoke(ctx, "/order_service.ModelService/Delete", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ModelServiceServer is the server API for ModelService service.
 // All implementations must embed UnimplementedModelServiceServer
 // for forward compatibility
 type ModelServiceServer interface {
 	Create(context.Context, *CreateModel) (*Model, error)
 	GetByID(context.Context, *ModelPK) (*Model, error)
+	Delete(context.Context, *ModelPK) (*empty.Empty, error)
 	mustEmbedUnimplementedModelServiceServer()
 }
 
@@ -66,6 +78,9 @@ func (UnimplementedModelServiceServer) Create(context.Context, *CreateModel) (*M
 }
 func (UnimplementedModelServiceServer) GetByID(context.Context, *ModelPK) (*Model, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetByID not implemented")
+}
+func (UnimplementedModelServiceServer) Delete(context.Context, *ModelPK) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
 }
 func (UnimplementedModelServiceServer) mustEmbedUnimplementedModelServiceServer() {}
 
@@ -116,6 +131,24 @@ func _ModelService_GetByID_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ModelService_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ModelPK)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ModelServiceServer).Delete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/order_service.ModelService/Delete",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ModelServiceServer).Delete(ctx, req.(*ModelPK))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ModelService_ServiceDesc is the grpc.ServiceDesc for ModelService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -130,6 +163,10 @@ var ModelService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetByID",
 			Handler:    _ModelService_GetByID_Handler,
+		},
+		{
+			MethodName: "Delete",
+			Handler:    _ModelService_Delete_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

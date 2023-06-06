@@ -4,6 +4,7 @@ package order_service
 
 import (
 	context "context"
+	empty "github.com/golang/protobuf/ptypes/empty"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -20,6 +21,7 @@ const _ = grpc.SupportPackageIsVersion7
 type MechanicServiceClient interface {
 	Create(ctx context.Context, in *CreateMechanic, opts ...grpc.CallOption) (*Mechanic, error)
 	GetByID(ctx context.Context, in *MechanicPK, opts ...grpc.CallOption) (*Mechanic, error)
+	Delete(ctx context.Context, in *MechanicPK, opts ...grpc.CallOption) (*empty.Empty, error)
 }
 
 type mechanicServiceClient struct {
@@ -48,12 +50,22 @@ func (c *mechanicServiceClient) GetByID(ctx context.Context, in *MechanicPK, opt
 	return out, nil
 }
 
+func (c *mechanicServiceClient) Delete(ctx context.Context, in *MechanicPK, opts ...grpc.CallOption) (*empty.Empty, error) {
+	out := new(empty.Empty)
+	err := c.cc.Invoke(ctx, "/order_service.MechanicService/Delete", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MechanicServiceServer is the server API for MechanicService service.
 // All implementations must embed UnimplementedMechanicServiceServer
 // for forward compatibility
 type MechanicServiceServer interface {
 	Create(context.Context, *CreateMechanic) (*Mechanic, error)
 	GetByID(context.Context, *MechanicPK) (*Mechanic, error)
+	Delete(context.Context, *MechanicPK) (*empty.Empty, error)
 	mustEmbedUnimplementedMechanicServiceServer()
 }
 
@@ -66,6 +78,9 @@ func (UnimplementedMechanicServiceServer) Create(context.Context, *CreateMechani
 }
 func (UnimplementedMechanicServiceServer) GetByID(context.Context, *MechanicPK) (*Mechanic, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetByID not implemented")
+}
+func (UnimplementedMechanicServiceServer) Delete(context.Context, *MechanicPK) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
 }
 func (UnimplementedMechanicServiceServer) mustEmbedUnimplementedMechanicServiceServer() {}
 
@@ -116,6 +131,24 @@ func _MechanicService_GetByID_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _MechanicService_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MechanicPK)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MechanicServiceServer).Delete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/order_service.MechanicService/Delete",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MechanicServiceServer).Delete(ctx, req.(*MechanicPK))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // MechanicService_ServiceDesc is the grpc.ServiceDesc for MechanicService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -130,6 +163,10 @@ var MechanicService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetByID",
 			Handler:    _MechanicService_GetByID_Handler,
+		},
+		{
+			MethodName: "Delete",
+			Handler:    _MechanicService_Delete_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
