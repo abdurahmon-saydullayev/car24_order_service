@@ -17,6 +17,11 @@ func SetUpServer(cfg config.Config, log logger.LoggerI, strg storage.StorageI, s
 	grpcServer = grpc.NewServer()
 
 	order_service.RegisterOrderServiceServer(grpcServer, service.NewOrderService(cfg, log, strg, srvc))
+	order_service.RegisterDiscountServiceServer(grpcServer, service.NewDiscountService(cfg, log, strg, srvc))
+	order_service.RegisterCarServiceServer(grpcServer, service.NewCarService(cfg, log, strg, srvc))
+	order_service.RegisterMechanicServiceServer(grpcServer, service.NewMechanicService(cfg, log, strg, srvc))
+	order_service.RegisterModelServiceServer(grpcServer, service.NewModelService(cfg, log, strg, srvc))
+	order_service.RegisterTarifServiceServer(grpcServer, service.NewTarifService(cfg, log, strg, srvc))
 
 	reflection.Register(grpcServer)
 	return

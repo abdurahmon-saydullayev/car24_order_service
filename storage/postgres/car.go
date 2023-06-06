@@ -23,7 +23,7 @@ func NewCarRepo(db *pgxpool.Pool) *carRepo {
 	}
 }
 
-func (s *carRepo) Create(ctx context.Context, req *order_service.CreateCar) (resp *order_service.Car, err error) {
+func (s *carRepo) Create(ctx context.Context, req *order_service.CreateCar) (resp *order_service.CarPrimaryKey, err error) {
 	id := uuid.New().String()
 
 	if err != nil {
@@ -49,7 +49,7 @@ func (s *carRepo) Create(ctx context.Context, req *order_service.CreateCar) (res
 		return nil, err
 	}
 
-	return &order_service.Car{Id: id}, nil
+	return &order_service.CarPrimaryKey{Id: id}, nil
 }
 func (s *carRepo) GetByID(ctx context.Context, req *order_service.CarPrimaryKey) (resp *order_service.Car, err error) {
 	query := `

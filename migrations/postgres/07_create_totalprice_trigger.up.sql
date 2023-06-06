@@ -2,7 +2,7 @@
 CREATE OR REPLACE FUNCTION calculate_total_price()
 RETURNS TRIGGER AS $$
 BEGIN
-    SELECT price_per_hour INTO NEW.price_per_hour
+    SELECT price_per_day INTO NEW.price_per_day
     FROM tarif
     WHERE id = NEW.tarif_id;
     

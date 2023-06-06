@@ -14,16 +14,16 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-type OrderService struct {
+type CarService struct {
 	cfg      config.Config
 	log      logger.LoggerI
 	strg     storage.StorageI
 	services client.ServiceManagerI
-	*order_service.UnimplementedOrderServiceServer
+	*order_service.UnimplementedCarServiceServer
 }
 
-func NewOrderService(cfg config.Config, log logger.LoggerI, strg storage.StorageI, srvs client.ServiceManagerI) *OrderService {
-	return &OrderService{
+func NewCarService(cfg config.Config, log logger.LoggerI, strg storage.StorageI, srvs client.ServiceManagerI) *CarService {
+	return &CarService{
 		cfg:      cfg,
 		log:      log,
 		strg:     strg,
@@ -31,17 +31,17 @@ func NewOrderService(cfg config.Config, log logger.LoggerI, strg storage.Storage
 	}
 }
 
-func (i *OrderService) Create(ctx context.Context, req *order_service.CreateOrder) (resp *order_service.Order, err error) {
+func (i *CarService) Create(ctx context.Context, req *order_service.CreateCar) (resp *order_service.Car, err error) {
 
 	i.log.Info("---CreateOrder------>", logger.Any("req", req))
 
-	pKey, err := i.strg.Order().Create(ctx, req)
+	pKey, err := i.strg.Car().Create(ctx, req)
 	if err != nil {
 		i.log.Error("!!!CreateOrder->Order->Create--->", logger.Error(err))
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
 
-	resp, err = i.strg.Order().GetByID(ctx, pKey)
+	resp, err = i.strg.Car().GetByID(ctx, pKey)
 	if err != nil {
 		i.log.Error("!!!GetByPKeyOrder->Order->Get--->", logger.Error(err))
 		return nil, status.Error(codes.InvalidArgument, err.Error())
@@ -50,11 +50,11 @@ func (i *OrderService) Create(ctx context.Context, req *order_service.CreateOrde
 	return
 }
 
-func (i *OrderService) GetByID(ctx context.Context, req *order_service.OrderPrimaryKey) (resp *order_service.Order, err error) {
+func (i *CarService) GetByID(ctx context.Context, req *order_service.CarPrimaryKey) (resp *order_service.Car, err error) {
 
 	i.log.Info("---GetOrderByID------>", logger.Any("req", req))
 
-	resp, err = i.strg.Order().GetByID(ctx, req)
+	resp, err = i.strg.Car().GetByID(ctx, req)
 	if err != nil {
 		i.log.Error("!!!GetOrderByID->Order->Get--->", logger.Error(err))
 		return nil, status.Error(codes.InvalidArgument, err.Error())
@@ -63,11 +63,11 @@ func (i *OrderService) GetByID(ctx context.Context, req *order_service.OrderPrim
 	return
 }
 
-func (i *OrderService) GetList(ctx context.Context, req *order_service.GetListOrderRequest) (resp *order_service.GetListOrderResponse, err error) {
+func (i *CarService) GetList(ctx context.Context, req *order_service.GetListCarRequest) (resp *order_service.GetListCarResponse, err error) {
 
 	i.log.Info("---GetOrders------>", logger.Any("req", req))
 
-	resp, err = i.strg.Order().GetList(ctx, req)
+	resp, err = i.strg.Car().GetList(ctx, req)
 	if err != nil {
 		i.log.Error("!!!GetOrders->Order->Get--->", logger.Error(err))
 		return nil, status.Error(codes.InvalidArgument, err.Error())
@@ -76,11 +76,11 @@ func (i *OrderService) GetList(ctx context.Context, req *order_service.GetListOr
 	return
 }
 
-func (i *OrderService) Update(ctx context.Context, req *order_service.UpdateOrder) (resp *order_service.Order, err error) {
+func (i *CarService) Update(ctx context.Context, req *order_service.UpdateCar) (resp *order_service.Car, err error) {
 
 	i.log.Info("---UpdateOrder------>", logger.Any("req", req))
 
-	rowsAffected, err := i.strg.Order().Update(ctx, req)
+	rowsAffected, err := i.strg.Car().Update(ctx, req)
 
 	if err != nil {
 		i.log.Error("!!!UpdateOrder--->", logger.Error(err))
@@ -91,7 +91,7 @@ func (i *OrderService) Update(ctx context.Context, req *order_service.UpdateOrde
 		return nil, status.Error(codes.InvalidArgument, "no rows were affected")
 	}
 
-	resp, err = i.strg.Order().GetByID(ctx, &order_service.OrderPrimaryKey{Id: req.Id})
+	resp, err = i.strg.Car().GetByID(ctx, &order_service.CarPrimaryKey{Id: req.Id})
 	if err != nil {
 		i.log.Error("!!!GetOrder->Order->Get--->", logger.Error(err))
 		return nil, status.Error(codes.NotFound, err.Error())
@@ -100,7 +100,7 @@ func (i *OrderService) Update(ctx context.Context, req *order_service.UpdateOrde
 	return resp, err
 }
 
-func (i *OrderService) UpdatePatch(ctx context.Context, req *order_service.UpdatePatchOrder) (resp *order_service.Order, err error) {
+func (i *CarService) UpdatePatch(ctx context.Context, req *order_service.UpdatePathCar) (resp *order_service.Car, err error) {
 
 	i.log.Info("---UpdatePatchOrder------>", logger.Any("req", req))
 
@@ -109,7 +109,7 @@ func (i *OrderService) UpdatePatch(ctx context.Context, req *order_service.Updat
 		Fields: req.GetFields().AsMap(),
 	}
 
-	rowsAffected, err := i.strg.Order().UpdatePatch(ctx, &updatePatchModel)
+	rowsAffected, err := i.strg.Car().UpdatePatch(ctx, &updatePatchModel)
 
 	if err != nil {
 		i.log.Error("!!!UpdatePatchOrder--->", logger.Error(err))
@@ -120,7 +120,7 @@ func (i *OrderService) UpdatePatch(ctx context.Context, req *order_service.Updat
 		return nil, status.Error(codes.InvalidArgument, "no rows were affected")
 	}
 
-	resp, err = i.strg.Order().GetByID(ctx, &order_service.OrderPrimaryKey{Id: req.Id})
+	resp, err = i.strg.Car().GetByID(ctx, &order_service.CarPrimaryKey{Id: req.Id})
 	if err != nil {
 		i.log.Error("!!!GetOrder->Order->Get--->", logger.Error(err))
 
@@ -130,11 +130,11 @@ func (i *OrderService) UpdatePatch(ctx context.Context, req *order_service.Updat
 	return resp, err
 }
 
-func (i *OrderService) Delete(ctx context.Context, req *order_service.OrderPrimaryKey) (resp *empty.Empty, err error) {
+func (i *CarService) Delete(ctx context.Context, req *order_service.CarPrimaryKey) (resp *empty.Empty, err error) {
 
 	i.log.Info("---DeleteOrder------>", logger.Any("req", req))
 
-	err = i.strg.Order().Delete(ctx, req)
+	err = i.strg.Car().Delete(ctx, req)
 	if err != nil {
 		i.log.Error("!!!DeleteOrder->Order->Get--->", logger.Error(err))
 		return nil, status.Error(codes.InvalidArgument, err.Error())

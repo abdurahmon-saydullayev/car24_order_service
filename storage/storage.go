@@ -38,7 +38,7 @@ type TarifRepoI interface {
 }
 
 type CarRepoI interface {
-	Create(context.Context, *order_service.CreateCar) (*order_service.Car, error)
+	Create(context.Context, *order_service.CreateCar) (*order_service.CarPrimaryKey, error)
 	GetByID(context.Context, *order_service.CarPrimaryKey) (*order_service.Car, error)
 	GetList(context.Context, *order_service.GetListCarRequest) (*order_service.GetListCarResponse, error)
 	Update(context.Context, *order_service.UpdateCar) (int64, error)
@@ -47,7 +47,7 @@ type CarRepoI interface {
 }
 
 type OrderRepoI interface {
-	Create(context.Context, *order_service.CreateOrder) (*order_service.OrderPrimaryKey, error)
+	Create(ctx context.Context, req *order_service.CreateOrder) (resp *order_service.OrderPrimaryKey, err error)
 	GetByID(context.Context, *order_service.OrderPrimaryKey) (*order_service.Order, error)
 	GetList(context.Context, *order_service.GetListOrderRequest) (*order_service.GetListOrderResponse, error)
 	Update(context.Context, *order_service.UpdateOrder) (int64, error)
