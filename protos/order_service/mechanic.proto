@@ -17,7 +17,7 @@ message CreateMechanic{
     string fullname = 1;
     string phone_number = 2;
     string photo = 3;
-    bool price_per_hour = 4;
+    string price_per_hour = 4;
 }
 
 message UpdateMechanic{

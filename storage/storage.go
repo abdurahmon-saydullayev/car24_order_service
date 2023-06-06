@@ -25,16 +25,19 @@ type DiscountRepoI interface {
 type MechnicRepoI interface {
 	Create(context.Context, *order_service.CreateMechanic) (*order_service.MechanicPK, error)
 	GetByID(context.Context, *order_service.MechanicPK) (*order_service.Mechanic, error)
+	Delete(ctx context.Context, req *order_service.MechanicPK) error
 }
 
 type ModelRepoI interface {
 	Create(context.Context, *order_service.CreateModel) (*order_service.ModelPK, error)
 	GetByID(context.Context, *order_service.ModelPK) (*order_service.Model, error)
+	Delete(ctx context.Context, req *order_service.ModelPK) error
 }
 
 type TarifRepoI interface {
 	Create(context.Context, *order_service.CreateTarif) (*order_service.TarifPK, error)
 	GetByID(context.Context, *order_service.TarifPK) (*order_service.Tarif, error)
+	Delete(ctx context.Context, req *order_service.TarifPK) error
 }
 
 type CarRepoI interface {

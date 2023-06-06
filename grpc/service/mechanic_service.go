@@ -7,7 +7,9 @@ import (
 	"Projects/Car24/car24_order_service/pkg/logger"
 	"Projects/Car24/car24_order_service/storage"
 	"context"
+	"fmt"
 
+	"github.com/golang/protobuf/ptypes/empty"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -35,12 +37,14 @@ func (i *MechanicService) Create(ctx context.Context, req *order_service.CreateM
 
 	pKey, err := i.strg.Mechanic().Create(ctx, req)
 	if err != nil {
+		fmt.Println("alskdmaslm")
 		i.log.Error("!!!CreateOrder->Order->Create--->", logger.Error(err))
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
 
 	resp, err = i.strg.Mechanic().GetByID(ctx, pKey)
 	if err != nil {
+		fmt.Println("laksdmasld")
 		i.log.Error("!!!GetByPKeyOrder->Order->Get--->", logger.Error(err))
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
@@ -59,4 +63,17 @@ func (i *MechanicService) GetByID(ctx context.Context, req *order_service.Mechan
 	}
 
 	return
+}
+
+func (i *MechanicService) Delete(ctx context.Context, req *order_service.MechanicPK) (resp *empty.Empty, err error) {
+
+	i.log.Info("---DeleteOrder------>", logger.Any("req", req))
+
+	err = i.strg.Mechanic().Delete(ctx, req)
+	if err != nil {
+		i.log.Error("!!!DeleteOrder->Order->Get--->", logger.Error(err))
+		return nil, status.Error(codes.InvalidArgument, err.Error())
+	}
+
+	return &empty.Empty{}, nil
 }

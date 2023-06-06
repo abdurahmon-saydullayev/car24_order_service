@@ -77,3 +77,14 @@ func (s *tarifRepo) GetByID(ctx context.Context, req *order_service.TarifPK) (re
 
 	return
 }
+
+func (c *tarifRepo) Delete(ctx context.Context, req *order_service.TarifPK) error {
+	query := `DELETE FROM "tarif" WHERE id = $1`
+
+	_, err := c.db.Exec(ctx, query, req.Id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

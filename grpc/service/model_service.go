@@ -8,6 +8,7 @@ import (
 	"Projects/Car24/car24_order_service/storage"
 	"context"
 
+	"github.com/golang/protobuf/ptypes/empty"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -59,4 +60,17 @@ func (i *ModelService) GetByID(ctx context.Context, req *order_service.ModelPK) 
 	}
 
 	return
+}
+
+func (i *ModelService) Delete(ctx context.Context, req *order_service.ModelPK) (resp *empty.Empty, err error) {
+
+	i.log.Info("---DeleteOrder------>", logger.Any("req", req))
+
+	err = i.strg.Model().Delete(ctx, req)
+	if err != nil {
+		i.log.Error("!!!DeleteOrder->Order->Get--->", logger.Error(err))
+		return nil, status.Error(codes.InvalidArgument, err.Error())
+	}
+
+	return &empty.Empty{}, nil
 }

@@ -80,7 +80,7 @@ func (c *discountRepo) GetByID(ctx context.Context, req *order_service.DiscountP
 		Id:           id.String,
 		Name:         name.String,
 		DiscountType: discount_type.String,
-		CreateAt:     discount_type.String,
+		CreateAt:     created_at.String,
 		UpdateAt:     updated_at.String,
 	}
 

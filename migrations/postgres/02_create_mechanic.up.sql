@@ -3,6 +3,6 @@ CREATE TABLE IF NOT EXISTS "mechanic"(
     fullname VARCHAR(100),
     phone_number VARCHAR(100),
     photo VARCHAR(100),
-    price_per_hour NUMERIC,
+    price_per_hour VARCHAR,
     status BOOLEAN DEFAULT FALSE
 );

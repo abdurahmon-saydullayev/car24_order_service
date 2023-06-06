@@ -28,7 +28,7 @@ func (c *mechanicRepo) Create(ctx context.Context, req *order_service.CreateMech
 			fullname,
 			phone_number,
 			photo,
-			price_per_hour,
+			price_per_hour
 	) VALUES($1, $2, $3, $4, $5)
 	`
 	_, err = c.db.Exec(
@@ -53,9 +53,9 @@ func (c *mechanicRepo) GetByID(ctx context.Context, req *order_service.MechanicP
 			fullname,
 			phone_number,
 			photo,
-			price_per_hour,
-		FROM "discount"
-		WHERE id = $1 AND status = false
+			price_per_hour
+		FROM "mechanic"
+		WHERE id = $1
 	`
 	resp = &order_service.Mechanic{}
 	var (
@@ -87,4 +87,16 @@ func (c *mechanicRepo) GetByID(ctx context.Context, req *order_service.MechanicP
 	}
 
 	return
+}
+
+func (c *mechanicRepo) Delete(ctx context.Context, req *order_service.MechanicPK) error {
+	query := `
+		DELETE FROM "mechanic" WHERE id = $1
+	`
+	_, err := c.db.Exec(ctx, query, req.Id)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

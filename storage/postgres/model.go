@@ -78,3 +78,14 @@ func (s *modelRepo) GetByID(ctx context.Context, req *order_service.ModelPK) (re
 
 	return
 }
+
+func (c *modelRepo) Delete(ctx context.Context, req *order_service.ModelPK) error {
+	query := `DELETE FROM "model" WHERE id = $1`
+
+	_, err := c.db.Exec(ctx, query, req.Id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
