@@ -27,9 +27,10 @@ func (c *discountRepo) Create(ctx context.Context, req *order_service.CreateDisc
 			id,
 			name,
 			discount_type,
+			discount_amount,
 			created_at,
 			updated_at
-	) VALUES($1, $2, $3, NOW(), NOW())
+	) VALUES($1, $2, $3, $4, NOW(), NOW())
 	`
 	_, err = c.db.Exec(
 		ctx,
@@ -37,6 +38,7 @@ func (c *discountRepo) Create(ctx context.Context, req *order_service.CreateDisc
 		id,
 		req.Name,
 		req.DiscountType,
+		req.DiscountAmount,
 	)
 	if err != nil {
 		return nil, err
@@ -50,6 +52,7 @@ func (c *discountRepo) GetByID(ctx context.Context, req *order_service.DiscountP
 			id,
 			name,
 			discount_type,
+			discount_amount,
 			created_at,
 			updated_at
 		FROM "discount"
@@ -57,17 +60,19 @@ func (c *discountRepo) GetByID(ctx context.Context, req *order_service.DiscountP
 	`
 	resp = &order_service.Discount{}
 	var (
-		id            sql.NullString
-		name          sql.NullString
-		discount_type sql.NullString
-		created_at    sql.NullString
-		updated_at    sql.NullString
+		id              sql.NullString
+		name            sql.NullString
+		discount_type   sql.NullString
+		discount_amount sql.NullFloat64
+		created_at      sql.NullString
+		updated_at      sql.NullString
 	)
 
 	err = c.db.QueryRow(ctx, query, req.Id).Scan(
 		&id,
 		&name,
 		&discount_type,
+		&discount_amount,
 		&created_at,
 		&updated_at,
 	)
@@ -77,11 +82,12 @@ func (c *discountRepo) GetByID(ctx context.Context, req *order_service.DiscountP
 	}
 
 	resp = &order_service.Discount{
-		Id:           id.String,
-		Name:         name.String,
-		DiscountType: discount_type.String,
-		CreateAt:     created_at.String,
-		UpdateAt:     updated_at.String,
+		Id:             id.String,
+		Name:           name.String,
+		DiscountType:   discount_type.String,
+		DiscountAmount: discount_amount.Float64,
+		CreateAt:       created_at.String,
+		UpdateAt:       updated_at.String,
 	}
 
 	return

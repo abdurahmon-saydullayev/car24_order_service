@@ -8,13 +8,16 @@ message Discount{
     string id = 1;
     string name = 2;
     string discount_type = 3;
-    string create_at = 4;
-    string update_at = 5;
+    double discount_amount = 4;
+    string create_at = 5;
+    string update_at = 6;
 }
 
 message CreateDiscount{
     string name = 1;
     string discount_type = 2;
+    double discount_amount = 3;
+
 }
 
 message DiscountPK{

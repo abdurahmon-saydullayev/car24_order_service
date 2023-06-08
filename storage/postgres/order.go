@@ -46,9 +46,10 @@ func (c *orderRepo) Create(ctx context.Context, req *order_service.CreateOrder) 
 			status,
 			mileage,
 			is_paid_date,
+			mechanic_id,
 			created_at,
 			updated_at
-		) VALUES ($1, $2, $3, $4, $5, $6,$7, $8, $9, $10,$11, $12, $13, NOW(),NOW())
+		) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, NOW(), NOW())
 	`
 
 	_, err = c.db.Exec(
@@ -67,8 +68,10 @@ func (c *orderRepo) Create(ctx context.Context, req *order_service.CreateOrder) 
 		req.Status,
 		req.Miliage,
 		req.IsPaidDate,
+		req.MechanicId,
 	)
 	if err != nil {
+		fmt.Println(err)
 		return nil, err
 	}
 
@@ -89,8 +92,9 @@ func (c *orderRepo) GetByID(ctx context.Context, req *order_service.OrderPrimary
 			discount,
 			order_number,
 			status,
-			miliage,
+			mileage,
 			is_paid_date,
+			mechanic_id,
 			created_at,
 			updated_at
 		FROM "order"
@@ -111,6 +115,7 @@ func (c *orderRepo) GetByID(ctx context.Context, req *order_service.OrderPrimary
 		status       sql.NullBool
 		miliage      sql.NullInt32
 		is_paid_date sql.NullString
+		mechanic_id  sql.NullString
 		created_at   sql.NullString
 		updated_at   sql.NullString
 	)
@@ -129,6 +134,7 @@ func (c *orderRepo) GetByID(ctx context.Context, req *order_service.OrderPrimary
 		&status,
 		&miliage,
 		&is_paid_date,
+		&mechanic_id,
 		&created_at,
 		&updated_at,
 	)
@@ -149,6 +155,7 @@ func (c *orderRepo) GetByID(ctx context.Context, req *order_service.OrderPrimary
 		Status:      status.Bool,
 		Miliage:     miliage.Int32,
 		IsPaidDate:  is_paid_date.String,
+		MechanicId:  mechanic_id.String,
 		CreatedAt:   created_at.String,
 		UpdatedAt:   updated_at.String,
 	}

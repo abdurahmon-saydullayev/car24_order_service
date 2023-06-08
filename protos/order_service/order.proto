@@ -21,6 +21,7 @@ message Order{
     string is_paid_date =13;
     string created_at =14;
     string updated_at =15;
+    string mechanic_id =16;
 }
 
 message CreateOrder{
@@ -35,6 +36,7 @@ message CreateOrder{
     bool status =9;
     int32 miliage =10;
     string is_paid_date =11;
+    string mechanic_id =12;
 }
 
 message UpdateOrder{

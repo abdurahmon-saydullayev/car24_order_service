@@ -1,1 +1,1 @@
-DROP TABLE IF EXISTS 'discount';
+DROP TABLE IF EXISTS "discount";
