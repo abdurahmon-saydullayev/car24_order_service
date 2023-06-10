@@ -37,7 +37,6 @@ func (c *orderRepo) Create(ctx context.Context, req *order_service.CreateOrder) 
 			car_id,
 			client_id,
 			tarif_id,
-			total_price,
 			paid_price,
 			day_count,
 			start_date,
@@ -49,7 +48,7 @@ func (c *orderRepo) Create(ctx context.Context, req *order_service.CreateOrder) 
 			mechanic_id,
 			created_at,
 			updated_at
-		) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, NOW(), NOW())
+		) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, NOW(), NOW())
 	`
 
 	_, err = c.db.Exec(
@@ -59,7 +58,6 @@ func (c *orderRepo) Create(ctx context.Context, req *order_service.CreateOrder) 
 		req.CarId,
 		req.ClientId,
 		req.TarifId,
-		req.TotalPrice,
 		req.PaidPrice,
 		req.DayCount,
 		req.StartDate,
@@ -74,6 +72,16 @@ func (c *orderRepo) Create(ctx context.Context, req *order_service.CreateOrder) 
 		fmt.Println(err)
 		return nil, err
 	}
+
+	// uuid := uuid.New().String()
+
+	// query2 := `INSERT INTO order_history(
+	// 	id,
+	// 	user_id,
+	// 	order_id,
+	// 	car_id,
+	// 	total_price
+	// )`
 
 	return &order_service.OrderPrimaryKey{Id: id}, nil
 }

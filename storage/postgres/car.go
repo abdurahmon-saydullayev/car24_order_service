@@ -54,7 +54,7 @@ func (s *carRepo) Create(ctx context.Context, req *order_service.CreateCar) (res
 }
 func (s *carRepo) GetByID(ctx context.Context, req *order_service.CarPrimaryKey) (resp *order_service.Car, err error) {
 	query := `
-		SELECT id, state_number, tarif_id, model_id, created_at, updated_at
+		SELECT id, state_number, tarif_id, model_id, status, created_at, updated_at
 		FROM "car"
 		WHERE id = $1
 	`
@@ -64,6 +64,7 @@ func (s *carRepo) GetByID(ctx context.Context, req *order_service.CarPrimaryKey)
 		state_number sql.NullString
 		tarif_id     sql.NullString
 		model_id     sql.NullString
+		status       sql.NullBool
 		created_at   sql.NullString
 		updated_at   sql.NullString
 	)
@@ -73,6 +74,7 @@ func (s *carRepo) GetByID(ctx context.Context, req *order_service.CarPrimaryKey)
 		&state_number,
 		&tarif_id,
 		&model_id,
+		&status,
 		&created_at,
 		&updated_at,
 	)
@@ -85,6 +87,7 @@ func (s *carRepo) GetByID(ctx context.Context, req *order_service.CarPrimaryKey)
 		StateNumber: state_number.String,
 		TarifId:     tarif_id.String,
 		ModelId:     model_id.String,
+		Status:      status.Bool,
 		CreatedAt:   created_at.String,
 		UpdatedAt:   updated_at.String,
 	}

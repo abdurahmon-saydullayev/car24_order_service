@@ -53,7 +53,8 @@ func (c *mechanicRepo) GetByID(ctx context.Context, req *order_service.MechanicP
 			fullname,
 			phone_number,
 			photo,
-			price_per_hour
+			price_per_hour,
+			status
 		FROM "mechanic"
 		WHERE id = $1
 	`
@@ -64,6 +65,7 @@ func (c *mechanicRepo) GetByID(ctx context.Context, req *order_service.MechanicP
 		phone_number   sql.NullString
 		photo          sql.NullString
 		price_per_hour sql.NullString
+		status         sql.NullBool
 	)
 
 	err = c.db.QueryRow(ctx, query, req.Id).Scan(
@@ -72,6 +74,7 @@ func (c *mechanicRepo) GetByID(ctx context.Context, req *order_service.MechanicP
 		&phone_number,
 		&photo,
 		&price_per_hour,
+		&status,
 	)
 	if err != nil {
 		return nil, err
@@ -84,6 +87,7 @@ func (c *mechanicRepo) GetByID(ctx context.Context, req *order_service.MechanicP
 		PhoneNumber:  phone_number.String,
 		Photo:        photo.String,
 		PricePerHour: price_per_hour.String,
+		Status:       status.Bool,
 	}
 
 	return

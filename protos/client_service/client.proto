@@ -23,6 +23,8 @@ message Client{
     string additional_phone_number = 16;
     string created_at = 17;
     string updated_at = 18;
+    string user_name = 19;
+    string password = 20;
 }
 
 message CreateClient{
@@ -39,6 +41,8 @@ message CreateClient{
     string propiska = 11;
     string passport_pinfl = 12;
     string additional_phone_number = 13;
+    string user_name = 14;
+    string password = 15;
 }
 
 message UpdateClient{
@@ -56,6 +60,8 @@ message UpdateClient{
     string propiska = 12;
     string passport_pinfl = 13;
     string additional_phone_number = 14;
+    string user_name = 15;
+    string password = 16;
 }
 
 message UpdatePatchClient {

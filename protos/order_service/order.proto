@@ -28,15 +28,14 @@ message CreateOrder{
     string car_id =1;
     string client_id =2;
     string tarif_id =3;
-    double total_price = 4;
-    double paid_price = 5;
-    int32 day_count = 6;
-    string start_date =7;
-    string discount =8;
-    bool status =9;
-    int32 miliage =10;
-    string is_paid_date =11;
-    string mechanic_id =12;
+    double paid_price = 4;
+    int32 day_count = 5;
+    string start_date =6;
+    string discount =7;
+    bool status =8;
+    int32 miliage =9;
+    string is_paid_date =10;
+    string mechanic_id =11;
 }
 
 message UpdateOrder{

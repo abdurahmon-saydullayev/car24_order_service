@@ -1,0 +1,9 @@
+CREATE TABLE IF NOT EXISTS "order_history" (
+    id UUID PRIMARY KEY,
+    user_id UUID NOT NULL,
+    order_id UUID NOT NULL,
+    car_id UUID NOT NULL,
+    total_price DOUBLE PRECISION NOT NULL,
+    FOREIGN KEY (order_id) REFERENCES "order" (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (car_id) REFERENCES car (id) ON DELETE CASCADE ON UPDATE CASCADE
+);
