@@ -69,6 +69,8 @@ func (s *carRepo) GetByID(ctx context.Context, req *order_service.CarPrimaryKey)
 		updated_at   sql.NullString
 	)
 
+	fmt.Println("just")
+
 	err = s.db.QueryRow(ctx, query, req.Id).Scan(
 		&id,
 		&state_number,
