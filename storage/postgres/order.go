@@ -73,16 +73,6 @@ func (c *orderRepo) Create(ctx context.Context, req *order_service.CreateOrder) 
 		return nil, err
 	}
 
-	// uuid := uuid.New().String()
-
-	// query2 := `INSERT INTO order_history(
-	// 	id,
-	// 	user_id,
-	// 	order_id,
-	// 	car_id,
-	// 	total_price
-	// )`
-
 	return &order_service.OrderPrimaryKey{Id: id}, nil
 }
 
